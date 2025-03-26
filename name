@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Timetable</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 10px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        input { width: 100%; border: none; text-align: center; }
+        button { margin-top: 10px; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Weekly Timetable</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>8:00 AM - 10:00 AM</th>
+                <th>10:00 AM - 12:00 PM</th>
+                <th>1:00 PM - 3:00 PM</th>
+                <th>3:00 PM - 5:00 PM</th>
+            </tr>
+        </thead>
+        <tbody>
+            <script>
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                days.forEach(day => {
+                    document.write(`<tr>
+                        <td>${day}</td>
+                        <td><input type='text' id='${day}-1'></td>
+                        <td><input type='text' id='${day}-2'></td>
+                        <td><input type='text' id='${day}-3'></td>
+                        <td><input type='text' id='${day}-4'></td>
+                    </tr>`);
+                });
+            </script>
+        </tbody>
+    </table>
+    <button onclick="saveTimetable()">Save Timetable</button>
+    <button onclick="resetTimetable()">Reset Timetable</button>
+    <script>
+        function saveTimetable() {
+            days.forEach(day => {
+                for (let i = 1; i <= 4; i++) {
+                    localStorage.setItem(`${day}-${i}`, document.getElementById(`${day}-${i}`).value);
+                }
+            });
+            alert("Timetable saved!");
+        }
+        function resetTimetable() {
+            if (confirm("Are you sure you want to reset the timetable?")) {
+                days.forEach(day => {
+                    for (let i = 1; i <= 4; i++) {
+                        document.getElementById(`${day}-${i}`).value = "";
+                        localStorage.removeItem(`${day}-${i}`);
+                    }
+                });
+                alert("Timetable reset!");
+            }
+        }
+        window.onload = function() {
+            days.forEach(day => {
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById(`${day}-${i}`).value = localStorage.getItem(`${day}-${i}`) || "";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
